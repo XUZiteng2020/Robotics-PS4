@@ -371,9 +371,41 @@ class GridWorldMDP(object):
         # Your function should populate the following arrays
         V = np.zeros([self.numstates])  # Value function
         Pi = np.zeros([self.numstates]) # Policy where Pi[i] is 0 (N), 1 (E), 2 (S), 3(W)
-
+              
         n = 0  # Keep track of the number of iterations
 
         # INSERT YOUR CODE HERE (DON'T FORGET TO INCREMENT THE NUMBER OF ITERATIONS)
 
+        delta = epsilon + 1
+        while delta > epsilon:
+            n += 1 # increment iterations
+            delta = 0
+            for s in range(self.numstates):
+                v = V[s]
+                max_V = 0
+                policy = None
+                for action in range(len(self.A)):
+                    sum = 0
+                    for s_prime in range(self.numstates):
+                        sum += self.T[s, s_prime, action] * (self.R[s, s_prime, action]
+                               + self.gamma * V[s_prime])
+                        
+                        # always choose
+                        # the action with the highest value
+                        if max_V <= sum:
+                            max_V = sum
+                            policy = action
+                        else: continue
+                # update value
+                V[s] = max_V
+                # update policy
+                Pi[s] = policy
+
+                # check max_difference 
+                # print("delta", delta)
+                # print("V[s]", V[s])
+                # print("v", v)
+                delta = max([delta, abs(V[s]-v)])
+
+            # increment iterations
         return (V, Pi, n)

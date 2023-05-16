@@ -15,7 +15,6 @@ if __name__ == '__main__':
     parser.add_argument('--epsilon', 
                         help='Value iteration convergence threshold',
                         type=float, required=True)
-
     args = parser.parse_args()
 
     mdp = GridWorldMDP(args.noise, args.gamma)
